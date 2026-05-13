@@ -1,0 +1,284 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  #app{font-family:'Playfair Display',serif;background:#0a0a0a;color:#f0e8d0;min-height:600px;padding:2rem 1.5rem;border-radius:12px;}
+  .header{text-align:center;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(201,168,76,0.3);}
+  .header h1{font-size:28px;font-weight:700;color:#C9A84C;letter-spacing:0.02em;margin-bottom:4px;}
+  .header-sub{font-size:13px;color:#8a7a5a;font-style:italic;}
+  .author-tag{display:inline-block;margin-top:8px;font-size:12px;color:#6a5a3a;font-style:italic;letter-spacing:0.04em;}
+  .author-tag span{color:#C9A84C;font-weight:600;}
+  .prog-card{background:#111;border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;}
+  .prog-label{font-size:13px;color:#8a7a5a;font-style:italic;}
+  .prog-pct{font-size:22px;font-weight:700;color:#C9A84C;}
+  .prog-pct.green{color:#5DCAA5;}
+  .bar-bg{background:#1a1a1a;border-radius:99px;height:8px;overflow:hidden;border:1px solid #2a2a2a;}
+  .bar-fill{height:100%;border-radius:99px;background:#C9A84C;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
+  .bar-fill.green{background:#1D9E75;}
+  .section{margin-bottom:2rem;}
+  .sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #2a2a2a;}
+  .sec-title{font-size:16px;font-weight:600;color:#C9A84C;display:flex;align-items:center;gap:8px;}
+  .gold-dot{width:8px;height:8px;border-radius:50%;background:#C9A84C;display:inline-block;flex-shrink:0;}
+  .green-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;display:inline-block;flex-shrink:0;}
+  .btn-add{background:transparent;border:1px solid #9B7A2F;color:#C9A84C;font-family:'Playfair Display',serif;font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all 0.2s;}
+  .btn-add:hover{background:#2a2210;border-color:#C9A84C;}
+  .goal-item{background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:0.875rem 1rem;margin-bottom:0.625rem;display:flex;align-items:center;gap:8px;transition:border-color 0.2s;flex-wrap:wrap;}
+  .goal-item:hover{border-color:rgba(201,168,76,0.3);}
+  .goal-item.completed{border-color:rgba(201,168,76,0.5);opacity:0.7;}
+  .goal-name{flex:1;font-size:14px;color:#f0e8d0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .txt-inp{background:#1a1a1a;border:1px solid #9B7A2F;border-radius:5px;color:#f0e8d0;font-family:'Playfair Display',serif;font-size:13px;padding:3px 8px;outline:none;min-width:0;}
+  .name-inp{flex:1;}
+  .num-inp{width:64px;text-align:center;}
+  .inp-group{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+  .inp-group label{font-size:11px;color:#8a7a5a;}
+  .counter{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+  .cbtn{width:26px;height:26px;border-radius:5px;border:1px solid #2a2a2a;background:#1a1a1a;color:#C9A84C;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;}
+  .cbtn:hover{border-color:#C9A84C;background:#2a2210;}
+  .cval{font-size:13px;font-weight:600;color:#f0e8d0;min-width:44px;text-align:center;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:5px;padding:2px 4px;}
+  .ibtn{width:28px;height:28px;border-radius:5px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.15s;flex-shrink:0;color:#8a7a5a;}
+  .ibtn:hover{background:#1a1a1a;}
+  .ibtn.edit:hover{color:#C9A84C;}
+  .ibtn.del:hover{color:#e05555;}
+  .ibtn.save{color:#C9A84C;}
+  .task-item{background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:0.75rem 1rem;margin-bottom:0.625rem;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color 0.2s;}
+  .task-item:hover{border-color:rgba(201,168,76,0.3);}
+  .chk{width:20px;height:20px;border-radius:4px;border:1.5px solid #9B7A2F;background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+  .chk.on{background:#C9A84C;border-color:#C9A84C;}
+  .chk.on::after{content:'✓';color:#0a0a0a;font-size:12px;font-weight:700;font-family:sans-serif;}
+  .tlbl{flex:1;font-size:14px;color:#f0e8d0;min-width:0;}
+  .tlbl.done{text-decoration:line-through;color:#8a7a5a;}
+  .empty{font-size:13px;color:#8a7a5a;font-style:italic;text-align:center;padding:1rem;}
+  .footer{text-align:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(201,168,76,0.2);}
+  .footer-txt{font-size:12px;color:#6a5a3a;font-style:italic;}
+  .footer-txt span{color:#C9A84C;font-weight:600;}
+  .rev-row{display:flex;align-items:center;gap:8px;margin-bottom:0.625rem;flex-wrap:wrap;}
+  .rev-item{background:#111;border:1px solid rgba(29,158,117,0.25);border-radius:8px;padding:0.875rem 1rem;display:flex;align-items:center;gap:8px;flex:1;min-width:0;flex-wrap:wrap;}
+  .rev-item.completed{border-color:rgba(29,158,117,0.6);opacity:0.75;}
+  .rev-name{flex:1;font-size:14px;color:#f0e8d0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .cval.green-v{color:#5DCAA5;}
+  .cbtn.green-b{color:#1D9E75;}
+  .cbtn.green-b:hover{border-color:#1D9E75;background:#0a2018;}
+</style>
+
+<div id="app">
+  <div class="header">
+    <div class="author-tag">Painel de <span>Otávio, the Best.</span></div>
+    <h1>✦ Controle de Metas ✦</h1>
+    <div class="header-sub">Acompanhe seu progresso diário com elegância</div>
+  </div>
+
+  <div class="prog-card">
+    <div class="prog-header">
+      <span class="prog-label">Progresso geral do dia</span>
+      <span class="prog-pct" id="pct-display">0%</span>
+    </div>
+    <div class="bar-bg"><div class="bar-fill" id="progress-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="prog-card" style="border-color:rgba(29,158,117,0.3);">
+    <div class="prog-header">
+      <span class="prog-label">Faturamento mensal</span>
+      <span class="prog-pct green" id="rev-pct-display">0%</span>
+    </div>
+    <div class="bar-bg"><div class="bar-fill green" id="rev-progress-bar" style="width:0%"></div></div>
+    <div style="font-size:12px;color:#8a7a5a;margin-top:8px;text-align:right;" id="rev-summary">R$ 0 de R$ 0</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-title"><span class="gold-dot"></span> Metas</div>
+      <button class="btn-add" onclick="addGoal()">＋ Adicionar Meta</button>
+    </div>
+    <div id="goals-list"></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-title" style="color:#5DCAA5;"><span class="green-dot"></span> Faturamento Mensal</div>
+      <button class="btn-add" style="border-color:rgba(29,158,117,0.5);color:#5DCAA5;" onclick="addRevenue()">＋ Adicionar Fonte</button>
+    </div>
+    <div id="revenue-list"></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-title"><span class="gold-dot"></span> Tarefas</div>
+      <button class="btn-add" onclick="addTask()">＋ Adicionar Tarefa</button>
+    </div>
+    <div id="tasks-list"></div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-txt">Criado por <span>Otávio, the Best.</span> — Todos os direitos reservados ✦</div>
+  </div>
+</div>
+
+<script>
+let goals=[
+  {id:1,name:'Copos de água',current:4,target:8,editing:false},
+  {id:2,name:'Horas de foco',current:2,target:6,editing:false},
+  {id:3,name:'Páginas lidas',current:15,target:30,editing:false},
+];
+let revenues=[
+  {id:1,name:'Clientes recorrentes',current:3200,target:8000,editing:false},
+  {id:2,name:'Projetos freelance',current:1500,target:4000,editing:false},
+];
+let tasks=[
+  {id:1,label:'Revisar agenda do dia',done:false,editing:false},
+  {id:2,label:'Meditação matinal',done:true,editing:false},
+  {id:3,label:'Responder e-mails prioritários',done:false,editing:false},
+];
+let gid=10,rid=10,tid=10;
+
+function fmt(n){return Number(n).toLocaleString('pt-BR');}
+
+function calcProgress(){
+  const total=goals.length+tasks.length;
+  if(!total)return 0;
+  const done=goals.filter(g=>g.current>=g.target).length+tasks.filter(t=>t.done).length;
+  return Math.round((done/total)*100);
+}
+function calcRevProgress(){
+  const totalTarget=revenues.reduce((a,r)=>a+r.target,0);
+  if(!totalTarget)return{pct:0,cur:0,tgt:0};
+  const totalCur=revenues.reduce((a,r)=>a+Math.min(r.current,r.target),0);
+  return{pct:Math.round((totalCur/totalTarget)*100),cur:revenues.reduce((a,r)=>a+r.current,0),tgt:totalTarget};
+}
+function updateProgress(){
+  const p=calcProgress();
+  document.getElementById('pct-display').textContent=p+'%';
+  document.getElementById('progress-bar').style.width=p+'%';
+  const rv=calcRevProgress();
+  document.getElementById('rev-pct-display').textContent=rv.pct+'%';
+  document.getElementById('rev-progress-bar').style.width=rv.pct+'%';
+  document.getElementById('rev-summary').textContent='R$ '+fmt(rv.cur)+' de R$ '+fmt(rv.tgt);
+}
+
+function renderGoals(){
+  const el=document.getElementById('goals-list');
+  if(!goals.length){el.innerHTML='<div class="empty">Nenhuma meta cadastrada.</div>';updateProgress();return;}
+  el.innerHTML=goals.map(g=>{
+    const done=g.current>=g.target;
+    if(g.editing){
+      return`<div class="goal-item">
+        <input class="txt-inp name-inp" value="${g.name}" id="gi-${g.id}" onkeydown="if(event.key==='Enter')saveGoal(${g.id})"/>
+        <div class="inp-group"><label>Atual</label><input class="txt-inp num-inp" type="number" min="0" value="${g.current}" id="gc-${g.id}"/></div>
+        <div class="inp-group"><label>Meta</label><input class="txt-inp num-inp" type="number" min="1" value="${g.target}" id="gt-${g.id}"/></div>
+        <button class="ibtn save" onclick="saveGoal(${g.id})" title="Salvar">✓</button>
+        <button class="ibtn del" onclick="deleteGoal(${g.id})" title="Excluir">🗑</button>
+      </div>`;
+    }
+    return`<div class="goal-item${done?' completed':''}">
+      <span class="goal-name">${done?'✦ ':''}${g.name}</span>
+      <div class="counter">
+        <button class="cbtn" onclick="changeGoal(${g.id},-1)">−</button>
+        <span class="cval">${g.current}/${g.target}</span>
+        <button class="cbtn" onclick="changeGoal(${g.id},1)">＋</button>
+      </div>
+      <button class="ibtn edit" onclick="editGoal(${g.id})" title="Editar">✎</button>
+      <button class="ibtn del" onclick="deleteGoal(${g.id})" title="Excluir">🗑</button>
+    </div>`;
+  }).join('');
+  updateProgress();
+}
+
+function changeGoal(id,d){const g=goals.find(x=>x.id===id);if(g)g.current=Math.max(0,g.current+d);renderGoals();}
+function editGoal(id){goals.forEach(g=>g.editing=false);const g=goals.find(x=>x.id===id);if(g)g.editing=true;renderGoals();setTimeout(()=>{const i=document.getElementById('gi-'+id);if(i)i.focus();},50);}
+function saveGoal(id){
+  const g=goals.find(x=>x.id===id);if(!g)return;
+  const ni=document.getElementById('gi-'+id);const ci=document.getElementById('gc-'+id);const ti=document.getElementById('gt-'+id);
+  if(ni&&ni.value.trim())g.name=ni.value.trim();
+  if(ci)g.current=Math.max(0,parseInt(ci.value)||0);
+  if(ti)g.target=Math.max(1,parseInt(ti.value)||1);
+  g.editing=false;renderGoals();
+}
+function deleteGoal(id){goals=goals.filter(x=>x.id!==id);renderGoals();}
+function addGoal(){
+  goals.forEach(g=>g.editing=false);
+  const n={id:++gid,name:'Nova meta',current:0,target:10,editing:true};
+  goals.push(n);renderGoals();
+  setTimeout(()=>{const i=document.getElementById('gi-'+n.id);if(i){i.focus();i.select();}},50);
+}
+
+function renderRevenues(){
+  const el=document.getElementById('revenue-list');
+  if(!revenues.length){el.innerHTML='<div class="empty">Nenhuma fonte de faturamento cadastrada.</div>';updateProgress();return;}
+  el.innerHTML=revenues.map(r=>{
+    const done=r.current>=r.target;
+    if(r.editing){
+      return`<div class="rev-item">
+        <input class="txt-inp name-inp" value="${r.name}" id="ri-${r.id}" onkeydown="if(event.key==='Enter')saveRevenue(${r.id})"/>
+        <div class="inp-group"><label>Atual (R$)</label><input class="txt-inp num-inp" type="number" min="0" value="${r.current}" id="rc-${r.id}" style="width:80px"/></div>
+        <div class="inp-group"><label>Meta (R$)</label><input class="txt-inp num-inp" type="number" min="1" value="${r.target}" id="rt-${r.id}" style="width:80px"/></div>
+        <button class="ibtn save" style="color:#1D9E75;" onclick="saveRevenue(${r.id})" title="Salvar">✓</button>
+        <button class="ibtn del" onclick="deleteRevenue(${r.id})" title="Excluir">🗑</button>
+      </div>`;
+    }
+    return`<div class="rev-item${done?' completed':''}">
+      <span class="rev-name">${done?'✦ ':''}${r.name}</span>
+      <div class="counter">
+        <button class="cbtn green-b" onclick="changeRevenue(${r.id},-100)">−</button>
+        <span class="cval green-v">R$${fmt(r.current)}/${fmt(r.target)}</span>
+        <button class="cbtn green-b" onclick="changeRevenue(${r.id},100)">＋</button>
+      </div>
+      <button class="ibtn edit" onclick="editRevenue(${r.id})" title="Editar">✎</button>
+      <button class="ibtn del" onclick="deleteRevenue(${r.id})" title="Excluir">🗑</button>
+    </div>`;
+  }).join('');
+  updateProgress();
+}
+
+function changeRevenue(id,d){const r=revenues.find(x=>x.id===id);if(r)r.current=Math.max(0,r.current+d);renderRevenues();}
+function editRevenue(id){revenues.forEach(r=>r.editing=false);const r=revenues.find(x=>x.id===id);if(r)r.editing=true;renderRevenues();setTimeout(()=>{const i=document.getElementById('ri-'+id);if(i)i.focus();},50);}
+function saveRevenue(id){
+  const r=revenues.find(x=>x.id===id);if(!r)return;
+  const ni=document.getElementById('ri-'+id);const ci=document.getElementById('rc-'+id);const ti=document.getElementById('rt-'+id);
+  if(ni&&ni.value.trim())r.name=ni.value.trim();
+  if(ci)r.current=Math.max(0,parseInt(ci.value)||0);
+  if(ti)r.target=Math.max(1,parseInt(ti.value)||1);
+  r.editing=false;renderRevenues();
+}
+function deleteRevenue(id){revenues=revenues.filter(x=>x.id!==id);renderRevenues();}
+function addRevenue(){
+  revenues.forEach(r=>r.editing=false);
+  const n={id:++rid,name:'Nova fonte',current:0,target:5000,editing:true};
+  revenues.push(n);renderRevenues();
+  setTimeout(()=>{const i=document.getElementById('ri-'+n.id);if(i){i.focus();i.select();}},50);
+}
+
+function renderTasks(){
+  const el=document.getElementById('tasks-list');
+  if(!tasks.length){el.innerHTML='<div class="empty">Nenhuma tarefa cadastrada.</div>';updateProgress();return;}
+  el.innerHTML=tasks.map(t=>{
+    if(t.editing){
+      return`<div class="task-item" style="cursor:default">
+        <div class="chk${t.done?' on':''}"></div>
+        <input class="txt-inp" style="flex:1;" value="${t.label}" id="ti-${t.id}" onkeydown="if(event.key==='Enter')saveTask(${t.id})"/>
+        <button class="ibtn save" onclick="saveTask(${t.id})" title="Salvar">✓</button>
+        <button class="ibtn del" onclick="deleteTask(${t.id})" title="Excluir">🗑</button>
+      </div>`;
+    }
+    return`<div class="task-item" onclick="toggleTask(${t.id})">
+      <div class="chk${t.done?' on':''}"></div>
+      <span class="tlbl${t.done?' done':''}">${t.label}</span>
+      <button class="ibtn edit" onclick="event.stopPropagation();editTask(${t.id})" title="Editar">✎</button>
+      <button class="ibtn del" onclick="event.stopPropagation();deleteTask(${t.id})" title="Excluir">🗑</button>
+    </div>`;
+  }).join('');
+  updateProgress();
+}
+
+function toggleTask(id){const t=tasks.find(x=>x.id===id);if(t&&!t.editing)t.done=!t.done;renderTasks();}
+function editTask(id){tasks.forEach(t=>t.editing=false);const t=tasks.find(x=>x.id===id);if(t)t.editing=true;renderTasks();setTimeout(()=>{const i=document.getElementById('ti-'+id);if(i)i.focus();},50);}
+function saveTask(id){const t=tasks.find(x=>x.id===id);if(!t)return;const i=document.getElementById('ti-'+id);if(i&&i.value.trim())t.label=i.value.trim();t.editing=false;renderTasks();}
+function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);renderTasks();}
+function addTask(){
+  tasks.forEach(t=>t.editing=false);
+  const n={id:++tid,label:'Nova tarefa',done:false,editing:true};
+  tasks.push(n);renderTasks();
+  setTimeout(()=>{const i=document.getElementById('ti-'+n.id);if(i){i.focus();i.select();}},50);
+}
+
+renderGoals();renderRevenues();renderTasks();
+</script>
